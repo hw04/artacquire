@@ -1,16 +1,15 @@
 <script>
+	import { goto } from '$app/navigation'
 	import '../app.css'
 </script>
 
 <nav>
 	<div>
-		<a href="/">Home/Logo</a>
-		<a href="/myexhibition">My Exhibition</a>
-		<a href="/explore">Explore</a>
-		<a href="/about">About</a>
+		<button on:click={() => goto('/')}>Home/Logo</button>
+		<button on:click={() => goto('/myexhibition')}>My Exhibition</button>
+		<button on:click={() => goto('/explore')}>Explore</button>
+		<button on:click={() => goto('/about')}>About</button>
 	</div>
 </nav>
 
 <slot />
-
-<!-- <html lang="en" data-theme="light"></html> -->
