@@ -1,5 +1,9 @@
 <script>
 	export let showModal // boolean
+	export let clickedImageId
+	export let artistName
+	export let artTitle
+	export let artYear
 
 	let dialog // HTMLDialogElement
 
@@ -14,21 +18,26 @@
 >
 	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div on:click|stopPropagation>
-		<slot name="header" />
-		<hr />
-		<slot />
-		<hr />
+		<img src="https://www.artic.edu/iiif/2/{clickedImageId}/full/843,/0/default.jpg" alt="test" />
+		<h2>Title: {artTitle}</h2>
+		<p>Artist: {artistName}</p>
+		<p>Year: {artYear}</p>
+		<button>Add to my collection</button>
 		<!-- svelte-ignore a11y-autofocus -->
-		<button autofocus on:click={() => dialog.close()}>close modal</button>
+		<button autofocus on:click={() => dialog.close()}>Close</button>
 	</div>
 </dialog>
 
 <style>
+	img {
+		width: 100%;
+		height: auto;
+	}
 	dialog {
 		max-width: 32em;
-		border-radius: 0.2em;
 		border: none;
 		padding: 0;
+		height: auto;
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
@@ -37,7 +46,7 @@
 		padding: 1em;
 	}
 	dialog[open] {
-		animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+		animation: zoom 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
 	@keyframes zoom {
 		from {
@@ -59,6 +68,7 @@
 		}
 	}
 	button {
-		display: block;
+		display: inline-block;
+		vertical-align: baseline;
 	}
 </style>

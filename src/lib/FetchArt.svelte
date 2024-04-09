@@ -1,47 +1,49 @@
 <script>
-	import ArtModal from './ArtModal.svelte'
+	import ArtModal from "./ArtModal.svelte"
 
 	let showModal = false
 
-	async function getArt() {
-		const response = await fetch('https://api.artic.edu/api/v1/artworks')
-		const artworks = await response.json()
-		return artworks
-	}
+	let clickedImageId
+	let artistName
+	let artTitle
+	let artYear
+
+	export let artInfo
 </script>
 
-<h1>Explore artwork</h1>
-
 <div>
-	{#await getArt()}
-		<p>Loading art...</p>
-	{:then art}
-		<div class="grid">
-			{#each art.data as { image_id }}
-				<ArtModal />
+	<div class="grid-parent">
+		{#each artInfo as { image_id, title, artist_title, date_display }}
+			<div class="grid-child">
 				<button
 					on:click={() => {
 						showModal = true
+						clickedImageId = image_id
+						artTitle = title
+						artYear = date_display
+						artistName = artist_title
 					}}
 				>
-					<img src="https://www.artic.edu/iiif/2/{image_id}/full/843,/0/default.jpg" alt="test" />
+					<img src="https://www.artic.edu/iiif/2/{image_id}/full/500,/0/default.jpg" alt="test" />
 				</button>
-			{/each}
-		</div>
-	{:catch error}
-		<p>{error.message}</p>
-	{/await}
+			</div>
+		{/each}
+		<ArtModal bind:showModal bind:clickedImageId bind:artistName bind:artTitle bind:artYear />
+	</div>
 </div>
 
 <style>
-	.grid {
+	.grid-parent {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 100px;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-rows: 1fr 1fr 1fr;
+		gap: 20px;
+		justify-items: center;
+		overflow: hidden;
 	}
 	img {
-		height: 300px;
-		width: 300px;
+		height: auto;
+		width: 100%;
 	}
 	button {
 		all: unset;
