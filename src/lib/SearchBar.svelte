@@ -9,10 +9,10 @@
 
 <form class="parent">
 	<select
-		><option>Sort by...</option>
-		<option>Sort by...</option>
-		<option>Sort by...</option>
-		<option>Sort by...</option></select
+		><option>Sort by artwork title (A-Z)</option>
+		<option>Sort by artwork title (Z-A)</option>
+		<option>Sort by artist name (A-Z)</option>
+		<option>Sort by artist name (Z-A)</option></select
 	>
 	<input bind:value={searchTerm} placeholder="Search by artist name, period, style" /><button
 		on:click={sendSearchTerm}>Search</button

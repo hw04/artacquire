@@ -16,18 +16,32 @@
 		{#each artInfo as { image_id, title, artist_title, date_display }}
 			<div class="grid-child">
 				<button
-					on:click={() => {
-						showModal = true
+					on:mouseover={() => {
 						clickedImageId = image_id
 						artTitle = title
 						artYear = date_display
 						artistName = artist_title
+						console.log(artTitle)
+					}}
+					on:focus={() => {
+						clickedImageId = image_id
+						artTitle = title
+						artYear = date_display
+						artistName = artist_title
+						console.log(artTitle)
+					}}
+					on:click={() => {
+						showModal = true
 					}}
 				>
-					<img src="https://www.artic.edu/iiif/2/{image_id}/full/500,/0/default.jpg" alt="test" />
+					<img
+						src="https://www.artic.edu/iiif/2/{image_id}/full/500,/0/default.jpg"
+						alt="{title} by {artist_title}"
+					/>
 				</button>
 			</div>
 		{/each}
+
 		<ArtModal bind:showModal bind:clickedImageId bind:artistName bind:artTitle bind:artYear />
 	</div>
 </div>
