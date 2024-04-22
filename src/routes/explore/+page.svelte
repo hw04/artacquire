@@ -1,50 +1,63 @@
 <script>
+	import { page } from "$app/stores"
 	import { goto } from "$app/navigation"
-	import DisplayArt from "$lib/DisplayArt.svelte"
+	import ArtGrid from "$lib/ArtGrid.svelte"
 	import SearchBar from "$lib/SearchBar.svelte"
+	import { afterUpdate, onMount } from "svelte"
 	export let data
-	let currentPage = 1
+	$: url = $page.url
+	$: chiResults = data.chiData.data
+	$: vaResults = data.vaData.records
+	// $: console.log(vaResults)
 
-	$: artData = data.data
+	let query = new URLSearchParams($page.url.searchParams.toString())
 
-	function handleNextButtonClick() {
-		currentPage++
-		goto(`/explore?page=${currentPage}`, { invalidateAll: true })
-	}
-
-	function handleBackButtonClick() {
-		currentPage--
-		goto(`/explore?page=${currentPage}`, { invalidateAll: true })
+	function handleSearchTerm(event) {
+		searchTerm = event.detail.query.toString()
+		goto(`/explore?q=${event.detail.query.toString()}&page=${currentPage}`)
 	}
 </script>
 
 <h1>Explore artwork</h1>
 
-<SearchBar />
+<SearchBar/>
 
-<div class="parent">
-	<div class="child">
-		<button disabled={currentPage === 1} on:click={handleBackButtonClick}>Previous page</button>
+<div class="grid-parent">
+	<div class="child1">
+		<button disabled={Number(url.searchParams.get("page")) === 1} data-sveltekit-prefetch
+			>Previous page</button
+		>
 	</div>
-	{#await artData}
-		<p>Loading art...</p>
-	{:then art}
-		<div class="child"><DisplayArt bind:artInfo={artData} /></div>
-	{:catch error}
-		<p>{error.message}</p>
-	{/await}
-	<div class="child">
-		<button on:click={handleNextButtonClick}>Next page</button>
+	<div class="child2">
+		{#await { chiResults, vaResults }}
+			<h3>Loading art...</h3>
+		{:then art}
+			<ArtGrid chiInfo={art.chiResults} vaInfo={art.vaResults} />
+		{:catch error}
+			<p>{error.message}</p>
+		{/await}
+	</div>
+	<div class="child3">
+		<button data-sveltekit-prefetch>Next page</button>
 	</div>
 </div>
 
 <style>
-	.parent {
+	.grid-parent {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 1fr 4fr 1fr;
 		grid-template-rows: 1fr;
 	}
-	.child {
+
+	.child1 {
+		grid-area: 1 / 1 / 2 / 2;
+		text-align: center;
+	}
+	.child2 {
+		grid-area: 1 / 2 / 2 / 3;
+	}
+	.child3 {
+		grid-area: 1 / 3 / 2 / 4;
 		text-align: center;
 	}
 </style>

@@ -1,24 +1,23 @@
-<div class="exhibition">
-	<aside>
-		<nav>
-			<ul>
-				<li>One</li>
-				<li>Two</li>
-			</ul>
-		</nav>
-	</aside>
+<h1>Your collection</h1>
 
-	<main>
-		<slot />
-	</main>
+<div class="grid-parent">
+	<div class="grid-child">
+		<button>Previous page</button>
+	</div>
+	<div class="grid-child"><slot /></div>
+
+	<div class="grid-child">
+		<button>Next page</button>
+	</div>
 </div>
 
 <style>
-	.exhibition {
+	.grid-parent {
 		display: grid;
-		gap: 2rem;
-		grid-template-columns: 200px 60ch;
-		margin-top: 2rem;
-		margin-left: 1rem;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-rows: 1fr;
+	}
+	.grid-child {
+		text-align: center;
 	}
 </style>
