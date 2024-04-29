@@ -1,38 +1,29 @@
-# create-svelte
+# ArtAcquire
+Welcome to ArtAcquire, a website where you can browse artwork, save pieces you like into a personal collection, and view more info about any artwork.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+## About the website
+The website has several pages: Home, Explore, Gallery, Random, and About.
 
-## Creating a project
+### Home
+A simple homepage to introduce the user to the website.
 
-If you're seeing this, you've probably already done this step. Congrats!
+### Explore
+The meat and potatoes of the website. Here you can browse artwork from two museum APIs: The Art Institute of Chicago and the V&A. You can enter a general search term or sort artwork. Artwork can be interacted with to display a modal dispalying more information and an option to add the piece to the user's collection.
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+### Gallery
+The user's saved collection of art. Art can be interacted with in the usual way and also removed from the collection.
 
-# create a new project in my-app
-npm create svelte@latest my-app
+### Random
+Displays a random piece of art.
+
+### About
+Gives the viewer some basic information about the site.
+
+## Running the code locally
+```
+git clone https://github.com/hw04/artacquire
+```
+```
+npm install
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
