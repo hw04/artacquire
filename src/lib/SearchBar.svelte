@@ -1,49 +1,53 @@
 <script>
-	import { page } from "$app/stores"
 	import { createEventDispatcher } from "svelte"
+	import { page } from "$app/stores"
 	const dispatch = createEventDispatcher()
-	let query
+
 	let searchTerm = ""
-	function sendSearchTerm() {
-		$page.query = searchTerm
+	export let sortBy
+	export let order
+	$: sortValue = `${sortBy}-${order}`
+
+	const sendSearchTerm = () => {
+		dispatch("term", searchTerm)
+	}
+	const sendSortBy = () => {
+		dispatch("sort", sortValue)
 	}
 </script>
 
 <form on:submit|preventDefault={sendSearchTerm} class="parent">
-	<select class="sort"
-		><option>Sort by artwork title (A-Z)</option>
-		<option>Sort by artwork title (Z-A)</option>
-		<option>Sort by artist name (A-Z)</option>
-		<option>Sort by artist name (Z-A)</option></select
-	>
+	<label for="sortBy" class="badge">Sort</label>
+	<select
+		bind:value={sortValue}
+		class="select select-bordered w-full mb-1"
+		name="sort"
+		on:change={sendSortBy}
+		><option selected value="-desc">Relevance (default)</option>
+		<option value="artist-asc">Artist name (A-Z)</option>
+		<option value="artist-desc">Artist name (Z-A)</option>
+		<option value="date-asc">Date (asc)</option>
+		<option value="date-desc">Date (desc)</option>
+	</select>
 	<input
 		type="text"
-		class="searchbar"
+		class="input input-bordered w-full mb-1"
 		bind:value={searchTerm}
 		placeholder="Search by artist name, period, style"
-	/><button type="submit" class="searchbutton">Search</button>
+	/><button class="btn w-full" type="submit">Search</button>
 </form>
 
 <style>
-	[class*="sort"] {
-		width: 100%;
-	}
-	[class*="searchbar"] {
-		width: 100%;
-	}
-	[class*="searchbutton"] {
-		width: 100%;
-	}
 	[class*="parent"] {
-		margin-bottom: 1em;
+		margin: 1em 1em 1em 1em;
 	}
 	@media only screen and (min-width: 768px) {
 		.parent {
 			display: grid;
-			grid-template-columns: 1fr 4fr 1fr;
+			grid-template-columns: 0.1fr 0.7fr 4fr 1fr;
 			grid-template-rows: 1fr;
 			gap: 2em;
-			margin-bottom: 2em;
+			margin: 1em 1em 1em 1em;
 		}
 	}
 </style>
