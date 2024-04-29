@@ -1,52 +1,127 @@
 <script>
-	import { page } from "$app/stores"
+	import { base } from "$app/paths"
 	import { goto } from "$app/navigation"
 	import ArtGrid from "$lib/ArtGrid.svelte"
 	import SearchBar from "$lib/SearchBar.svelte"
-	import { afterUpdate, onMount } from "svelte"
+
 	export let data
-	$: url = $page.url
+
+	$: searchTerm = data.q
+	$: sortBy = data.sortBy
+	$: order = data.order
+	$: pageNumber = Number(data.page)
 	$: chiResults = data.chiData.data
 	$: vaResults = data.vaData.records
-	// $: console.log(vaResults)
-
-	let query = new URLSearchParams($page.url.searchParams.toString())
-
 	function handleSearchTerm(event) {
-		searchTerm = event.detail.query.toString()
-		goto(`/explore?q=${event.detail.query.toString()}&page=${currentPage}`)
+		searchTerm = event.detail
+		if (sortBy.length === 0) {
+			goto(`${base}/explore?q=${searchTerm}&page=${pageNumber}`)
+		} else {
+			goto(`${base}/explore?q=${searchTerm}&page=${pageNumber}&sort=${sortBy}&order=${order}`)
+		}
+	}
+
+	function handleSortBy(event) {
+		switch (event.detail) {
+			case "-desc":
+				if (searchTerm.length != 0) {
+					goto(`${base}/explore?q=${searchTerm}&page=${pageNumber}`)
+				} else {
+					goto(`${base}/explore?page=${pageNumber}`)
+				}
+				break
+			case "artist-asc":
+				if (searchTerm.length != 0) {
+					goto(`${base}/explore?q=${searchTerm}&page=${pageNumber}&sort=artist&order=asc`)
+				} else {
+					goto(`${base}/explore?page=${pageNumber}&sort=artist&order=asc`)
+				}
+				break
+			case "artist-desc":
+				if (searchTerm.length != 0) {
+					goto(`${base}/explore?q=${searchTerm}&page=${pageNumber}&sort=artist&order=desc`)
+				} else {
+					goto(`${base}/explore?page=${pageNumber}&sort=artist&order=desc`)
+				}
+				break
+			case "date-asc":
+				if (searchTerm.length != 0) {
+					goto(`${base}/explore?q=${searchTerm}&page=${pageNumber}&sort=date&order=asc`)
+				} else {
+					goto(`${base}/explore?page=${pageNumber}&sort=date&order=asc`)
+				}
+				break
+			case "date-desc":
+				if (searchTerm.length != 0) {
+					goto(`${base}/explore?q=${searchTerm}&page=${pageNumber}&sort=date&order=desc`)
+				} else {
+					goto(`${base}/explore?page=${pageNumber}&sort=date&order=desc`)
+				}
+				break
+		}
 	}
 </script>
 
-<h1>Explore artwork</h1>
+<h1 class="text-3xl font-bold text-center mt-6 mb-6">Explore Artwork</h1>
 
-<SearchBar/>
+<SearchBar bind:sortBy bind:order on:term={handleSearchTerm} on:sort={handleSortBy} />
 
 <div class="grid-parent">
 	<div class="child1">
-		<button disabled={Number(url.searchParams.get("page")) === 1} data-sveltekit-prefetch
-			>Previous page</button
-		>
+		{#if searchTerm.length === 0 && sortBy.length === 0 && pageNumber > 1}
+			<a class="btn" href="/explore?page={pageNumber - 1}" data-sveltekit-prefetch>Previous</a>
+		{:else if searchTerm.length === 0 && sortBy.length != 0 && pageNumber > 1}
+			<a
+				class="btn"
+				href="/explore?page={pageNumber - 1}&sort={sortBy}&order={order}"
+				data-sveltekit-prefetch>Previous</a
+			>
+		{:else if searchTerm.length != 0 && sortBy.length != 0 && pageNumber > 1}
+			<a
+				class="btn"
+				href="/explore?q={searchTerm}&page={pageNumber - 1}&sort={sortBy}&order={order}"
+				data-sveltekit-prefetch>Previous</a
+			>
+		{:else if pageNumber > 1}
+			<a class="btn" href="/explore?q={searchTerm}&page={pageNumber - 1}" data-sveltekit-prefetch
+				>Previous</a
+			>
+		{/if}
 	</div>
 	<div class="child2">
-		{#await { chiResults, vaResults }}
-			<h3>Loading art...</h3>
-		{:then art}
-			<ArtGrid chiInfo={art.chiResults} vaInfo={art.vaResults} />
-		{:catch error}
-			<p>{error.message}</p>
-		{/await}
+		<ArtGrid chiInfo={chiResults} vaInfo={vaResults} />
 	</div>
 	<div class="child3">
-		<button data-sveltekit-prefetch>Next page</button>
+		{#if searchTerm.length === 0 && sortBy.length === 0}
+			<a class="btn" href="/explore?page={pageNumber + 1}" data-sveltekit-prefetch>Next</a>
+		{:else if searchTerm.length != 0 && sortBy.length != 0}
+			<a
+				class="btn"
+				href="/explore?q={searchTerm}&page={pageNumber + 1}&sort={sortBy}&order={order}"
+				data-sveltekit-prefetch>Next</a
+			>
+		{:else if searchTerm.length === 0 && sortBy.length != 0}
+			<a
+				class="btn"
+				href="/explore?page={pageNumber + 1}&sort={sortBy}&order={order}"
+				data-sveltekit-prefetch>Next</a
+			>
+		{:else if searchTerm.length != 0 && sortBy.length === 0}
+			<a class="btn" href="/explore?q={searchTerm}&page={pageNumber + 1}" data-sveltekit-prefetch
+				>Next</a
+			>
+		{/if}
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
 	.grid-parent {
 		display: grid;
 		grid-template-columns: 1fr 4fr 1fr;
 		grid-template-rows: 1fr;
+		gap: 1em;
+		margin-left: 1em;
+		margin-right: 1em;
 	}
 
 	.child1 {
