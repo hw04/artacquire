@@ -11,13 +11,13 @@ A simple homepage to introduce the user to the website.
 The meat and potatoes of the website. Here you can browse artwork from two museum APIs: The Art Institute of Chicago and the V&A. You can enter a general search term or sort artwork. Artwork can be interacted with to display a modal dispalying more information and an option to add the piece to the user's collection.
 
 ### Gallery
-The user's collection of art. Art can be interacted with in the usual way and also removed from the collection.
+The user's saved collection of art. Art can be interacted with in the usual way and also removed from the collection.
 
 ### Random
 A page which displays a random piece of art.
 
 ### About
-A page to give the viewer some basic information about the site.
+A page that gives the viewer some basic information about the site.
 
 ## Running the code locally
 ```
