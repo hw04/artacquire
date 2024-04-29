@@ -14,10 +14,10 @@ The meat and potatoes of the website. Here you can browse artwork from two museu
 The user's saved collection of art. Art can be interacted with in the usual way and also removed from the collection.
 
 ### Random
-A page which displays a random piece of art.
+Displays a random piece of art.
 
 ### About
-A page that gives the viewer some basic information about the site.
+Gives the viewer some basic information about the site.
 
 ## Running the code locally
 ```
