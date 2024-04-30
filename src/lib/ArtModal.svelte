@@ -60,7 +60,9 @@
 		<h2 class="font-bold text-lg text-center mb-5">{artTitle || "Unknown title"}</h2>
 		<ul>
 			<li class="text-center">
-				{artistName === "Unknown" ? "Unknown artist" : artistName || "Unknown artist"}
+				<h3 class="font-bold text-md text-center">
+					{artistName === "Unknown" ? "Unknown artist" : artistName || "Unknown artist"}
+				</h3>
 			</li>
 			<li class="text-center">{artYear || "Unknown year"}</li>
 			{#if artLocation && clickedImageId && clickedImageId.length != 10}
@@ -71,26 +73,30 @@
 				<li class="text-center mb-5">{artLocation}</li>
 			{/if}
 		</ul>
-
 		{#if displayAddButton}
-			<button class="btn" disabled={isInCollection} on:click={addToCollection}
-				>Add to collection</button
+			<button
+				class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+				disabled={isInCollection}
+				on:click={addToCollection}>Add to collection</button
 			>
 		{:else if displayRemoveButton}
-			<button class="btn" on:click={() => removeFromCollection(clickedImageId)}>Remove?</button>
+			<button
+				class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
+				on:click={() => removeFromCollection(clickedImageId)}>Remove?</button
+			>
 		{/if}
 
 		{#if furtherInfoCode}
 			{#if clickedImageId && clickedImageId.length === 10}
 				<a
-					class="btn"
+					class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://collections.vam.ac.uk/item/{furtherInfoCode}">Find out more</a
 				>
 			{:else if clickedImageId && clickedImageId.length != 10}
 				<a
-					class="btn"
+					class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg"
 					target="_blank"
 					rel="noopener noreferrer"
 					href="https://www.artic.edu/artworks/{furtherInfoCode}">Find out more</a
@@ -98,7 +104,11 @@
 			{/if}
 		{/if}
 		<!-- svelte-ignore a11y-autofocus -->
-		<button class="btn float-right" autofocus on:click={() => dialog.close()}>Close</button>
+		<button
+			class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg float-right"
+			autofocus
+			on:click={() => dialog.close()}>Close</button
+		>
 	</div>
 </dialog>
 

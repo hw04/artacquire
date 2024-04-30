@@ -3,7 +3,7 @@
 	<p class="py-6">
 		Please click one of the navigation buttons above or the button below to get started
 	</p>
-	<p>
-		<a class="btn btn-primary" href="/explore">Get Started</a>
-	</p>
+	<div>
+		<a class="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg" href="/explore">Get Started</a>
+	</div>
 </div>

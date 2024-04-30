@@ -3,16 +3,16 @@
 	import { goto } from "$app/navigation"
 	import ArtGrid from "$lib/ArtGrid.svelte"
 	import SearchBar from "$lib/SearchBar.svelte"
-	import { onMount } from "svelte"
 
 	export let data
-	let isPageLoading = true
+
 	$: searchTerm = data.q
 	$: sortBy = data.sortBy
 	$: order = data.order
 	$: pageNumber = Number(data.page)
 	$: chiResults = data.chiData.data
 	$: vaResults = data.vaData.records
+
 	function handleSearchTerm(event) {
 		searchTerm = event.detail
 		if (sortBy.length === 0) {
@@ -61,77 +61,85 @@
 				break
 		}
 	}
-
-	onMount(() => {
-		isPageLoading = false
-	})
 </script>
 
-{#if isPageLoading}
-	<p>Loading...</p>
-{:else}
-	<h1 class="text-3xl font-bold text-center mt-6 mb-6">Explore Artwork</h1>
+<h1 class="text-3xl font-bold text-center mt-6 mb-6">Explore Artwork</h1>
 
-	<SearchBar bind:sortBy bind:order on:term={handleSearchTerm} on:sort={handleSortBy} />
+<SearchBar bind:sortBy bind:order on:term={handleSearchTerm} on:sort={handleSortBy} />
 
-	<div class="grid-parent">
-		<div class="child1">
-			{#if searchTerm.length === 0 && sortBy.length === 0 && pageNumber > 1}
-				<a class="btn btn-primary" href="/explore?page={pageNumber - 1}" data-sveltekit-prefetch
-					>Previous</a
-				>
-			{:else if searchTerm.length === 0 && sortBy.length != 0 && pageNumber > 1}
-				<a
-					class="btn btn-primary"
-					href="/explore?page={pageNumber - 1}&sort={sortBy}&order={order}"
-					data-sveltekit-prefetch>Previous</a
-				>
-			{:else if searchTerm.length != 0 && sortBy.length != 0 && pageNumber > 1}
-				<a
-					class="btn btn-primary"
-					href="/explore?q={searchTerm}&page={pageNumber - 1}&sort={sortBy}&order={order}"
-					data-sveltekit-prefetch>Previous</a
-				>
-			{:else if pageNumber > 1}
-				<a
-					class="btn btn-primary"
-					href="/explore?q={searchTerm}&page={pageNumber - 1}"
-					data-sveltekit-prefetch>Previous</a
-				>
+<div class="grid-parent">
+	<div class="child1">
+		{#if searchTerm.length === 0 && sortBy.length === 0 && pageNumber > 1}
+			<a class="btn btn-primary" href="/explore?page={pageNumber - 1}" data-sveltekit-prefetch
+				>Previous</a
+			>
+		{:else if searchTerm.length === 0 && sortBy.length != 0 && pageNumber > 1}
+			<a
+				class="btn btn-primary"
+				href="/explore?page={pageNumber - 1}&sort={sortBy}&order={order}"
+				data-sveltekit-prefetch>Previous</a
+			>
+		{:else if searchTerm.length != 0 && sortBy.length != 0 && pageNumber > 1}
+			<a
+				class="btn btn-primary"
+				href="/explore?q={searchTerm}&page={pageNumber - 1}&sort={sortBy}&order={order}"
+				data-sveltekit-prefetch>Previous</a
+			>
+		{:else if pageNumber > 1}
+			<a
+				class="btn btn-primary"
+				href="/explore?q={searchTerm}&page={pageNumber - 1}"
+				data-sveltekit-prefetch>Previous</a
+			>
+		{:else}
+			<a class="btn btn-disabled" disabled href="#top">Previous</a>
+		{/if}
+	</div>
+	<div class="child2">
+		<ArtGrid chiInfo={chiResults} vaInfo={vaResults} />
+	</div>
+	<div class="child3">
+		{#if searchTerm.length === 0 && sortBy.length === 0}
+			{#if chiResults.length === 0 && vaResults.length === 0}
+				<button class="btn" disabled>Next</button>
 			{:else}
-				<a class="btn btn-disabled" disabled href="#top">Previous</a>
-			{/if}
-		</div>
-		<div class="child2">
-			<ArtGrid chiInfo={chiResults} vaInfo={vaResults} />
-		</div>
-		<div class="child3">
-			{#if searchTerm.length === 0 && sortBy.length === 0}
 				<a class="btn btn-primary" href="/explore?page={pageNumber + 1}" data-sveltekit-prefetch
 					>Next</a
 				>
-			{:else if searchTerm.length != 0 && sortBy.length != 0}
+			{/if}
+		{:else if searchTerm.length != 0 && sortBy.length != 0}
+			{#if chiResults.length === 0 && vaResults.length === 0}
+				<button class="btn" disabled>Next</button>
+			{:else}
 				<a
 					class="btn btn-primary"
 					href="/explore?q={searchTerm}&page={pageNumber + 1}&sort={sortBy}&order={order}"
 					data-sveltekit-prefetch>Next</a
 				>
-			{:else if searchTerm.length === 0 && sortBy.length != 0}
+			{/if}
+		{:else if searchTerm.length === 0 && sortBy.length != 0}
+			{#if chiResults.length === 0 && vaResults.length === 0}
+				<button class="btn" disabled>Next</button>
+			{:else}
 				<a
 					class="btn btn-primary"
 					href="/explore?page={pageNumber + 1}&sort={sortBy}&order={order}"
 					data-sveltekit-prefetch>Next</a
 				>
-			{:else if searchTerm.length != 0 && sortBy.length === 0}
+			{/if}
+		{:else if searchTerm.length != 0 && sortBy.length === 0}
+			{#if chiResults.length === 0 && vaResults.length === 0}
+				<button class="btn" disabled>Next</button>
+			{:else}
 				<a
 					class="btn btn-primary"
 					href="/explore?q={searchTerm}&page={pageNumber + 1}"
 					data-sveltekit-prefetch>Next</a
 				>
 			{/if}
-		</div>
+		{/if}
 	</div>
-{/if}
+</div>
 
 <style lang="postcss">
 	.grid-parent {
