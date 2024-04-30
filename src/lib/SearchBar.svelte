@@ -1,6 +1,5 @@
 <script>
 	import { createEventDispatcher } from "svelte"
-	import { page } from "$app/stores"
 	const dispatch = createEventDispatcher()
 
 	let searchTerm = ""
@@ -34,7 +33,7 @@
 		class="input input-bordered w-full mb-1"
 		bind:value={searchTerm}
 		placeholder="Search by artist name, period, style"
-	/><button class="btn w-full" type="submit">Search</button>
+	/><button class="btn btn-primary w-full" type="submit">Search</button>
 </form>
 
 <style>

@@ -102,9 +102,9 @@
 		gap: 1em;
 		align-content: start;
 		align-items: stretch;
-		margin: 1em 1em 5em 1em;
+		margin: 1em 1em 1em 1em;
 		justify-content: center;
-		justify-items: stretch;
+		justify-items: center;
 	}
 	.grid-child {
 		max-height: 95%;

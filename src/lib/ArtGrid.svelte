@@ -57,7 +57,6 @@
 		furtherInfoCode = systemNumber
 		showModal = true
 	}
-	$: console.log(chiInfo, vaInfo)
 </script>
 
 {#if chiInfo.length === 0 && vaInfo.length === 0}
@@ -151,13 +150,12 @@
 		gap: 1em;
 		align-content: start;
 		align-items: stretch;
-		margin: 1em 1em 5em 1em;
-		justify-content: center;
-		justify-items: stretch;
+		margin: 1em 1em 1em 1em;
+		justify-items: center;
 	}
 	.grid-child {
-		max-height: 95%;
-		max-width: 95%;
+		max-height: 90%;
+		max-width: 90%;
 	}
 	img {
 		height: 100%;
